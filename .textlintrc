@@ -19,6 +19,7 @@
       }
     },
     "preset-ja-technical-writing": {
+      "ja-no-weak-phrase": false,
       "sentence-length": {
         "max": 180
       },
