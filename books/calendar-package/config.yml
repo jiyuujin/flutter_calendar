@@ -1,8 +1,12 @@
-title: "カレンダーアプリを作ろう"
-summary:
+title: "カレンダーアプリで学ぶパッケージ開発"
+summary: "カレンダーアプリを実際に開発しながら、Flutterパッケージ、Dartパッケージの開発の進め方を学びます。"
 topics: ["zenn", "dart", "flutter", "calendar"] # 5 つまで
 published: false # 下書きは false
 price: 0
 chapters:
   - page1
   - page2
+  - page3
+  - page4
+  - page5
+  - page6

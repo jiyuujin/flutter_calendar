@@ -6,7 +6,7 @@ title: "はじめに"
 
 <!-- chooyan-eng -->
 
-
+フリーランスで Flutter アプリ開発をしているちゅーやん ([@chooyan](https://zenn.dev/chooyan)) です。
 
 <!-- jiyuujin -->
 
