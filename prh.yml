@@ -4,3 +4,11 @@ rules:
     specs:
       - from: google
         to: Google
+  - expected: Widget
+    patterns:
+      - Widget
+      - ウィジェット
+  - expected: インタフェース
+    patterns:
+      - インターフェース
+      - インタフェース
