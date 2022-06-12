@@ -8,13 +8,11 @@ title: "Flutter パッケージ calendar_widget の開発"
 
 `Calendar` は、コンストラクタの引数 `date` に `DateTime` 型のオブジェクトを渡すことで、`date` が所属する月のカレンダーを表示する Widget です。
 
-たとえば、以下のように記述すると
+たとえば、以下のように記述すると、次のような UI が形成されます。
 
 ```dart
 Calendar(date: DateTime(2022, 6)),
 ```
-
-以下のような UI が形成されます。
 
 ![Calendar が構築する UI]()
 
@@ -36,9 +34,9 @@ $ flutter create -t package calendar_widget
 
 # dependencies の設定
 
-`Calendar` Widget を実装する前に、依存関係の設定を行います。
+`Calendar` Widget を実装する前に、依存関係を設定します。
 
-`Calendar` は中で `CalendarBuider` を利用してカレンダーデータの生成を行うため、あらかじめ `calendar_logic` パッケージをインストールしておく必要があります。
+`Calendar` は中で `CalendarBuider` を利用してカレンダーデータを生成するため、あらかじめ `calendar_logic` パッケージをインストールしておく必要があります。
 
 インストールの方法は通常 Flutter アプリを開発する場合と同様で、`pubspec.yaml` ファイルの `dependencies` にパッケージ名を記述すれば OK です。
 
@@ -58,7 +56,7 @@ dependencies:
 
 `calendar_logic: ^1.0.0` のようにパッケージ名とバージョンを記述するのではなく、 `path: ../calendar_logic` とパッケージのパスを指定することで、ビルド時に pub リポジトリではなく指定したパスからパッケージのソースコードを取得できます。
 
-この方法は、たとえば社内専用の非公開のパッケージを開発する場合に利用できるだけでなく、実際に公開されている任意のパッケージのソースコードを GitHub からクローンし、それをローカルで修正しながらデバッグしたり内部実装を理解したり、といった用途にも活用できるので、覚えておいて損はないでしょう。
+この方法は、たとえば社内専用の非公開のパッケージを開発する場合に利用できるだけでなく、実際に公開されている任意のパッケージのソースコードを GitHub からクローンして読み込む場合にも利用できます。それによってローカルで修正しながらデバッグしたり内部実装を理解したり、といった用途にも活用できるので、覚えておいて損はないでしょう。
 
 他にも、`path` の代わりに `git` を指定することで、GitHub などインターネット上に存在する Git 管理されたリポジトリから直接読み取ることも可能です。
 
@@ -71,7 +69,7 @@ dependencies:
     git: https://github.com/chooyan-eng/calendar_logic.git
 ```
 
-この他にも、ブランチを指定したり、リポジトリの特定のディレクトリ内のプロジェクトを読み込んだりと、細かい指定の方法が用意されていますが、詳しくは Dart 公式ドキュメントの [Package dependencies](https://dart.dev/tools/pub/dependencies) ページを参照してみてください。
+この他にも、ブランチを指定したり、リポジトリの特定のディレクトリ内のプロジェクトを読み込んだりと、細かい指定の方法が用意されています。詳しくは Dart 公式ドキュメントの [Package dependencies](https://dart.dev/tools/pub/dependencies) ページを参照してみてください。
 
 ただし、依存するパッケージの取得先を `path` や `git` で指定したままの pub リポジトリへの公開はできません。以下のような警告が出ますので、指示に従って `pubspec.yaml` の先頭に、「このパッケージは公開用ではない」ことを表す `publish_to: none` の記述を追記してください。
 
@@ -404,5 +402,3 @@ class _DateBox extends StatelessWidget {
 ```
 
 ### example アプリで見た目を確認
-
-// TODO: 書く
