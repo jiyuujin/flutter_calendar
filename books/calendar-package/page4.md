@@ -36,16 +36,16 @@ print(data);
 
 # プロジェクトの作成
 
-今回のハンズオンでは、`calendar_handson` ディレクトリを任意の場所に作成し、その中に各プロジェクトを配置する以下のようなディレクトリ構成を前提として進めます。
+今回のハンズオンでは、`package_handson` ディレクトリを任意の場所に作成し、その中に各プロジェクトを配置する以下のようなディレクトリ構成を前提として進めます。
 
 ```
-calendar_handson
+package_handson
   |- calendar_logic
   |- calendar_widget
   |- flutter_calendar
 ```
 
-`calendar_handson` ディレクトリを任意の場所に作成したら、ターミナルから以下のコマンドで `calendar_logic` プロジェクトを作成します。
+`package_handson` ディレクトリを任意の場所に作成したら、ターミナルから以下のコマンドで `calendar_logic` プロジェクトを作成します。
 
 ```
 $ cd calenar_handson
