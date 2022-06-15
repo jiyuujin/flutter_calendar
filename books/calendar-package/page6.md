@@ -129,13 +129,13 @@ class _CalendarPageState extends State<CalendarPage> {
 
 次に `_toNextMonth` と `_toPreviousMonth` メソッドです。
 
-dart の `DateTime` クラスは、年と月を指定してオブジェクトの生成ができます。たとえば「2022年6月」という情報を持った `_currentMonth` の次の月を表す `DateTime` オブジェクトを生成するには以下のように記述します。
+dart の `DateTime` クラスは、年と月を指定してオブジェクトの生成ができます。たとえば「2022 年 6 月」という情報を持った `_currentMonth` の次の月を表す `DateTime` オブジェクトを生成するには以下のように記述します。
 
 ```dart
 DateTime(_currentMonth.year, _currentMonth.month + 1)
 ```
 
-この処理は、`_currentMonth.month` が 12 の場合でも問題ありません。「2022年13月」は自動的に「2023年1月」と解釈されるためです。
+この処理は、`_currentMonth.month` が 12 の場合でも問題ありません。「2022 年 13 月」は自動的に「2023 年 1 月」と解釈されるためです。
 
 ```dart
 print(DateTime(2022, 12 + 1)); // -> 2023-01-01 00:00:00.000

@@ -2,11 +2,11 @@
 title: "Dart パッケージ calendar_logic の開発"
 ---
 
-それでは、1ヶ月分のカレンダーデータを生成する `CalendarBuilder` クラスを提供する `calendar_logic` パッケージを開発しましょう。
+それでは、1 ヶ月分のカレンダーデータを生成する `CalendarBuilder` クラスを提供する `calendar_logic` パッケージを開発しましょう。
 
 # CalendarBuilder クラスの仕様
 
-`CalendarBuilder` クラスは、`DateTime` 型のオブジェクトを引数として受け取り、その `DateTime` オブジェクトが所属する月の1ヶ月分のカレンダーデータを `List<List<int?>>` 型で返却する `build()` メソッドを提供します。
+`CalendarBuilder` クラスは、`DateTime` 型のオブジェクトを引数として受け取り、その `DateTime` オブジェクトが所属する月の 1 ヶ月分のカレンダーデータを `List<List<int?>>` 型で返却する `build()` メソッドを提供します。
 
 利用側のコードは以下のようになります。
 
@@ -28,9 +28,9 @@ print(data);
 ]
 ```
 
-2022年6月の実際のカレンダーを確認すると、6/1(水)をスタートとし、5週目の6/30(木)が最終日となっています。
+2022 年 6 月の実際のカレンダーを確認すると、6/1(水)をスタートとし、5 週目の 6/30(木)が最終日となっています。
 
-`build` メソッドの出力は月曜日を最初として1週間分が1つの `int?` 型のリストとなっていて、それが週の数だけさらにリストになっています。また、別の月に所属する箇所は `null` になる仕様となっています。
+`build` メソッドの出力は月曜日を最初として 1 週間分が 1 つの `int?` 型のリストとなっていて、それが週の数だけさらにリストになっています。また、別の月に所属する箇所は `null` になる仕様となっています。
 
 `CalendarBuilder` の仕様はわかったでしょうか。それでは、このようなクラスを提供する `calendar_logic` パッケージを実際に作っていきましょう。
 
@@ -52,7 +52,7 @@ $ cd calenar_handson
 $ flutter create -t package calendar_logic
 ```
 
-最後に以下のメッセージが出たらOKです。
+最後に以下のメッセージが出たら OK です。
 
 ```
 All done!
@@ -159,7 +159,7 @@ int _calcLastDate(DateTime date) {
 
 ### _calcFirstWeekday
 
-曜日の情報は `DateTime` オブジェクトが保持しています。例えば、「2022年6月10日」の曜日は以下のように取得できます。
+曜日の情報は `DateTime` オブジェクトが保持しています。例えば、「2022 年 6 月 10 日」の曜日は以下のように取得できます。
 
 ```dart
 // 2022/6/10 は金曜日
@@ -222,7 +222,7 @@ int _calcLastDate(DateTime date) {
 
 これをコードで表現するために `List.generate` メソッドを利用してみましょう。
 
-`List.generate` メソッドは、第 1 引数に指定した `length` の数だけ 第 2 引数の `generator` 関数が呼び出されます。そして、その `generator` 関数の戻り値を集めたリストが生成され、 `List.generate` 全体の戻り値となる、という仕組みです。
+`List.generate` メソッドは、第 1 引数に指定した `length` の数だけ第 2 引数の `generator` 関数が呼び出されます。そして、その `generator` 関数の戻り値を集めたリストが生成され、 `List.generate` 全体の戻り値となる、という仕組みです。
 
 ```dart
 final generatedList = List.generate(7, (index) => 'dart');
@@ -236,7 +236,7 @@ final generatedList = List.generate(7, (index) => index < 3 ? null : index); // 
 print(generatedList); // -> [null, null, null, 3, 4, 5, 6]
 ```
 
-つまり、`generator` 関数で「 `index` の値が一日の曜日よりも小さければ `null` を、そうでなければ `1` から始まる数値を返却する」処理を書けば 1 週目のカレンダーが生成できそうです。
+つまり、`generator` 関数で「`index` の値が一日の曜日よりも小さければ `null` を、そうでなければ `1` から始まる数値を返す」処理を書けば 1 週目のカレンダーが生成できそうです。
 
 たとえば以下のように実装します。
 
