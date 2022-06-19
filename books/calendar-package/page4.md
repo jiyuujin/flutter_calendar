@@ -32,7 +32,7 @@ print(data);
 
 `build` メソッドの出力は月曜日を最初として 1 週間分が 1 つの `int?` 型のリストとなっていて、それが週の数だけさらにリストになっています。また、別の月に所属する箇所は `null` になる仕様となっています。
 
-`CalendarBuilder` の仕様はわかったでしょうか。それでは、このようなクラスを提供する `calendar_logic` パッケージを実際に作っていきましょう。
+`CalendarBuilder` の仕様は伝わったでしょうか。それでは、このようなクラスを提供する `calendar_logic` パッケージを実際に作っていきましょう。
 
 # プロジェクトの作成
 
@@ -48,11 +48,11 @@ package_handson
 `package_handson` ディレクトリを任意の場所に作成したら、ターミナルから以下のコマンドで `calendar_logic` プロジェクトを作成します。
 
 ```
-$ cd calenar_handson
+$ cd path/to/calenar_handson
 $ flutter create -t package calendar_logic
 ```
 
-最後に以下のメッセージが出たら OK です。
+ログの最後に以下のメッセージが出たら OK です。
 
 ```
 All done!
@@ -98,7 +98,7 @@ class Calculator {
 - `CalendarBuilder` クラス
 - `build` メソッド
 
-`lib/calendar_logic.dart` ファイルを以下のように修正してください。コメントは任意ですが、pub.dev は __public なクラス、フィールド、メソッドにドキュメントとしてコメントが記述されていること__ を PUB POINTS の評価対象としているため、pub.dev への公開を考える場合は記述するクセをつけるとよいでしょう。[^1]
+`lib/calendar_logic.dart` ファイルを以下のように修正してください。コメントは任意ですが、pub.dev は __public なクラス、フィールド、メソッドにドキュメントが記述されていること__ を PUB POINTS の評価対象としているため、pub.dev への公開を考える場合は記述するクセをつけるとよいでしょう。[^1]
 
 ```dart:calendar_logic.dart
 /// 1ヶ月分のカレンダーを生成するクラス
@@ -109,13 +109,13 @@ class CalendarBuilder {
 }
 ```
 
-さて、ここからは先述の仕様に従っている限りコードの内容は自由です。自分で考えながらコーディングしてみたい方はここで Book を閉じてみるのも良いでしょう。
+さて、ここからは先述の仕様に従っている限りコードの内容は自由です。自分で考えながらコーディングしてみたい方はここで本を閉じてみるのも良いでしょう。
 
 実際に動くものを一旦作ってしまいたいという方は、以下のサンプルコードを参考にしながらコーディングしてみてください。
 
 ## 返却するリストを定義
 
-まずは、`build` メソッドが返却するカレンダーを表す `List<List<int?>>` 型のオブジェクトを定義し、戻り値として `return` するコードを書いてしまいましょう。
+まずは、`build` メソッドが返却するカレンダーを表す `List<List<int?>>` 型の `calendar` を定義し、そのまま戻り値として `return` するコードを書いてしまいましょう。
 
 ```dart:calendar_logic.dart
 List<List<int?>> build(DateTime date) {
@@ -130,10 +130,10 @@ List<List<int?>> build(DateTime date) {
 
 カレンダーの数値は必ず順番に並んでいますので、基本的には以下の情報があれば機械的にデータを生成できそうです。
 
-- 一日（いっぴ）が何曜日か
+- その月の 1 日が何曜日か
 - 最後は何日か
 
-これらを明らかにする private なメソッドを定義し、それぞれに処理を書いていきましょう。ここでは一日の曜日を求めるメソッドを `_calcFirstWeekday`、最後の日を求めるメソッドを `_calcLastDate` としています。
+これらを明らかにする private なメソッドを定義し、それぞれに処理を書いていきましょう。ここではその月の 1 日の曜日を求めるメソッドを `_calcFirstWeekday`、最後の日を求めるメソッドを `_calcLastDate` としています。
 
 ```dart:calendar_logic.dart
 List<List<int?>> build(DateTime date) {
@@ -145,7 +145,7 @@ List<List<int?>> build(DateTime date) {
   return calendar;
 }
 
-/// [date] が所属する月の一日の曜日を計算します。
+/// [date] が所属する月の 1 日の曜日を計算します。
 /// 月曜日を 1 とし、日曜日は 7 です。
 int _calcFirstWeekday(DateTime date) {
 }
@@ -206,19 +206,19 @@ int _calcLastDate(DateTime date) {
 
 これで、以下の 2 つの情報が計算できました。
 
-- 一日（いっぴ）が何曜日か
+- その月の 1 日が何曜日か
 - 最後は何日か
 
 これらを使ってカレンダーを生成していきましょう。
 
 ### 1 週目のカレンダーデータを生成する
 
-各週のデータを生成する上で、 1 週目は少し特殊です。開始が月曜日ではないためです。そこで、1 週目は個別にデータを生成するのが分かりやすいでしょう。
+各週のデータを生成する上で、 1 週目は少し特殊です。開始が月曜日とは限らないためです。そこで、少々スマートさに欠けるものの 1 週目は個別にデータを生成するのが分かりやすいでしょう。
 
 1 週目のデータは以下のように生成します。
 
-- その月の一日より前はすべて `null`
-- 一日を `1` とし、日曜日になるまでインクリメントした日付を埋める
+- その月の 1 日より前はすべて `null`
+- 1 日を `1` とし、日曜日になるまでインクリメントした日付を埋める
 
 これをコードで表現するために `List.generate` メソッドを利用してみましょう。
 
@@ -243,12 +243,12 @@ print(generatedList); // -> [null, null, null, 3, 4, 5, 6]
 ```dart
 final firstWeek = List.generate(7, (index) {
   final i = index + 1; // index は 0 はじまりのため、1 はじまりの曜日と合わせる
-  final offset = i - firstWeekday; // 一日の曜日との差
+  final offset = i - firstWeekday; // その月の 1 日の曜日との差
   return i < firstWeekday ? null : 1 + offset;
 });
 ```
 
-さいごに生成された 1 週目のデータを `calendar` に追加し、できあがった `build` メソッドの実装は以下の通りです。
+最後に、生成された 1 週目のデータを `calendar` に追加し、できあがった `build` メソッドの実装は以下の通りです。
 
 ```dart:calendar_logic.dart
 List<List<int?>> build(DateTime date) {
@@ -279,6 +279,7 @@ List<List<int?>> build(DateTime date) {
 while(true) {
   final firstDateOfWeek = calendar.last.last! + 1; // 前の週の最終日の次の日がスタート
 
+  // 1 週間分のデータを生成
   final week = List.generate(7, (index) {
     final date = firstDateOfWeek + index; // 追加する日付
     return date <= lastDate ? date : null; // 最終日以前なら採用、それ以降は null
@@ -310,7 +311,7 @@ class CalendarBuilder {
 
     final firstWeek = List.generate(7, (index) {
       final i = index + 1; // index は 0 はじまりのため、1 はじまりの曜日と合わせる
-      final offset = i - firstWeekday; // 一日の曜日との差
+      final offset = i - firstWeekday; // その月の 1 日の曜日との差
       return i < firstWeekday ? null : 1 + offset;
     });
 
@@ -319,6 +320,7 @@ class CalendarBuilder {
     while (true) {
       final firstDateOfWeek = calendar.last.last! + 1; // 前の週の最終日の次の日がスタート
 
+      // 1 週間分のデータを生成
       final week = List.generate(7, (index) {
         final date = firstDateOfWeek + index; // 追加する日付
         return date <= lastDate ? date : null; // 最終日以前なら採用、それ以降は null
@@ -336,7 +338,7 @@ class CalendarBuilder {
     return calendar;
   }
 
-  /// [date] が所属する月の一日の曜日を計算します。
+  /// [date] が所属する月の 1 日の曜日を計算します。
   /// 月曜日を 1 とし、日曜日は 7 です。
   int _calcFirstWeekday(DateTime date) {
     return DateTime(date.year, date.month, 1).weekday;
@@ -348,5 +350,8 @@ class CalendarBuilder {
   }
 }
 ```
+
+# テストを書いて動作確認する
+
 
 [^1]: 本来であればコメントは英語で書くことが望ましいですが、このハンズオンでは分かりやすさを優先して日本語で書いています。
