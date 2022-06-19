@@ -352,6 +352,48 @@ class CalendarBuilder {
 ```
 
 # テストを書いて動作確認する
+一通りのコーディングが完了しましたが、まだこの実装で問題がないかを確認できていません。
 
+先述の通り、パッケージのプロジェクトには「呼び出されるコード」は書いても「呼び出すコード」は書きません。そこで、ユニットテストを書くことで動作確認してみましょう。
+
+ユニットテストは自動生成される `/test/calendar_logic_test` ファイルにひとまず書いていきます。
+
+たとえば、 2022 年 1 月のカレンダーデータが正しく生成されることを確認するために、以下のように書き換えてみてください。
+
+```dart:calendar_logic_test
+import 'package:test/test.dart';
+import 'package:calendar_logic/calendar_logic.dart';
+
+void main() {
+  group('Unit Test', () {
+    test('Generate a calendar on 2022/01', () {
+      final DateTime date = DateTime(2022, 1, 1);
+      final calendarData = CalendarBuilder().build(date);
+      expect(calendarData, [
+        [null, null, null, null, null, 1, 2],
+        [3, 4, 5, 6, 7, 8, 9],
+        [10, 11, 12, 13, 14, 15, 16],
+        [17, 18, 19, 20, 21, 22, 23],
+        [24, 25, 26, 27, 28, 29, 30],
+        [31, null, null, null, null, null, null],
+      ]);
+    });
+  });
+}
+```
+
+ファイルを保存したら、VS Code のターミナルから以下のコマンドでテストを実行します。
+
+```
+$ flutter test
+```
+
+テストが実行され、最後に `00:00 +1: All tests passed!` のメッセージが表示されれば動作 OK です。
+
+余力があれば、他の月についても実際のカレンダーと見比べながらテストケースを追加してみましょう。
+
+---
+
+以上で `calendar_logic` パッケージの開発は完了です。次は `calendar_widget` パッケージに `Calendar` を実装していきます。
 
 [^1]: 本来であればコメントは英語で書くことが望ましいですが、このハンズオンでは分かりやすさを優先して日本語で書いています。
