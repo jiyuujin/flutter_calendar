@@ -14,7 +14,7 @@ title: "Flutter パッケージ calendar_widget の開発"
 Calendar(date: DateTime(2022, 6)),
 ```
 
-![Calendar が構築する UI]()
+![Calendar が構築する UI](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/flutter_calendar_widget.png?raw=true)
 
 コンストラクタで受け取った `date` を元に 1 ヶ月分のカレンダーデータを生成するのも `Calendar` の役割です。これにより、 `Calendar` を利用する側はどのように 1 ヶ月分のデータを生成するのかを気にすることなく、とりあえず表示したい月を渡すだけでカレンダーの UI を実現できるようになり、とても便利です。
 
@@ -22,7 +22,7 @@ Calendar(date: DateTime(2022, 6)),
 
 # プロジェクトの作成
 
-`flutter create` でパッケージプロジェクトを生成する際、そのパッケージが `Widget` を提供する場合でも、ピュアな Dart クラスを提供する場合でもコマンドに変わりはありません。
+`flutter create` でパッケージプロジェクトを生成する際、それが `Widget` を提供する Flutter パッケージでも、ピュアな Dart パッケージでも実行するコマンドに変わりはありません。
 
 `package_handson` ディレクトリで以下のコマンドを実行し、`calendar_widget` プロジェクトを作成してください。
 
@@ -30,17 +30,17 @@ Calendar(date: DateTime(2022, 6)),
 $ flutter create -t package calendar_widget
 ```
 
-`calendar_widget` プロジェクトが生成できたら、VS Code で開いてください。
+`calendar_widget` プロジェクトが生成できたら、VS Code で開きましょう。
 
 # dependencies の設定
 
-`Calendar` Widget を実装する前に、依存関係を設定します。
+`Calendar` を実装する前に、依存関係を設定します。
 
 `Calendar` は中で `CalendarBuider` を利用してカレンダーデータを生成するため、あらかじめ `calendar_logic` パッケージをインストールしておく必要があります。
 
 インストールの方法は通常 Flutter アプリを開発する場合と同様で、`pubspec.yaml` ファイルの `dependencies` にパッケージ名を記述すれば OK です。
 
-ただし、今回インストールするのは `riverpod` のような pub リポジトリに公開済みのパッケージではなく、先ほど開発してローカルにのみ存在するパッケージであるため、「ローカルから読み込む」ための記述をしなければなりません。
+ただし、今回インストールするのは `riverpod` のような pub リポジトリに公開済みのパッケージではなく、先ほど開発してローカルに保存してあるだけのパッケージであるため、 __「ローカルから読み込む」__ ための記述をしなければなりません。
 
 `pubspec.yaml` の `dependencies` を以下のように修正してください。
 
@@ -54,13 +54,13 @@ dependencies:
       ../calendar_logic
 ```
 
-`calendar_logic: ^1.0.0` のようにパッケージ名とバージョンを記述するのではなく、 `path: ../calendar_logic` とパッケージのパスを指定することで、ビルド時に pub リポジトリではなく指定したパスからパッケージのソースコードを取得できます。
+`calendar_logic: ^1.0.0` のようにパッケージ名とバージョンを記述するのではなく、 `path: ../calendar_logic` とパッケージのパスを指定することで、__pub リポジトリではなく指定したパスからパッケージのソースコードを取得__ できます。
 
 この方法は、たとえば社内専用の非公開のパッケージを開発する場合に利用できるだけでなく、実際に公開されている任意のパッケージのソースコードを GitHub からクローンして読み込む場合にも利用できます。それによってローカルで修正しながらデバッグしたり内部実装を理解したり、といった用途にも活用できるので、覚えておいて損はないでしょう。
 
 他にも、`path` の代わりに `git` を指定することで、GitHub などインターネット上に存在する Git 管理されたリポジトリから直接読み取ることも可能です。
 
-```yaml
+```yaml:pubspec.yaml
 dependencies:
   flutter:
     sdk: flutter
@@ -85,9 +85,9 @@ description: A new Flutter package project.
 version: 0.0.1
 ```
 
-## コーディング
+# コーディング
 
-では、`Calendar` Widget を実装しましょう。
+では、`Calendar` を実装していきましょう。
 
 Widget クラスを作る場合でも、やることは通常 Flutter アプリを開発する上で自作の Widget クラスを作る場合と変わりはありません。
 
@@ -130,25 +130,38 @@ class Calendar extends StatelessWidget {
 }
 ```
 
-これで、先述した通りに `Calendar(date: DateTime(2022, 6))` のようなインタフェースで呼び出せるようになりました。
+なお、コンストラクタ内の `super.key` の書き方は Flutter 3 （正確には Dart 2.17）で追加された書き方であるため、Flutter 2.x を利用している場合など環境によってはエラーが出る場合があります。
 
-先ほどのチャプターと同様、ここから自分でコーディングしたい方は一度 Book を閉じていただき、実際に動くものを作ってしまいたいという方は以下のサンプルコードを参考にしながらコーディングしてみてください。
+その場合は以下のようにコンストラクタを修正してください。
+
+```dart
+const Calendar({
+  Key? key,
+  required this.date,
+}) : super(key: key);
+```
+
+これで、先述した通りに `Calendar(date: DateTime(2022, 6))` のような呼び出し方ができるようになりました。
+
+先ほどのチャプターと同様、ここから自分でコーディングしたい方は一度本を閉じていただき、実際に動くものを作ってしまいたいという方は以下のサンプルコードを参考にしながらコーディングしてみてください。
 
 ## カレンダーデータの生成
 
-受け取った `date` オブジェクトを元にカレンダーデータを生成しましょう。
+まずは受け取った `date` オブジェクトを元にカレンダーデータを生成しましょう。
 
 Widget 内で利用するデータの生成処理のタイミングは、以下のように実装の内容によっていくつかのパターンが考えられます。
 
 - `build` メソッド内で行う
-- `Calendar` を `StatefulWidget` のサブクラスとして、 `initState` メソッド内で行う
+- `Calendar` を `StatefulWidget` のサブクラスに変更し、 `initState` メソッド内で行う
 - コンストラクタ内で変換してしまい、フィールドで保持する
 
-注意したいのは、通常アプリ開発で利用するような `provider` や `riverpod` などの状態管理パッケージは極力利用しない方がよいということです。`calendar_widget` パッケージ自体が特定の状態管理パッケージの特定のバージョンに依存してしまうことで、`calendar_widget` パッケージを利用したいアプリのビルド時に依存関係の解決に問題が生じてしまう可能性があるためです。
+ここで注意したいのは、通常アプリ開発で利用するような `provider` や `riverpod` などの状態管理パッケージは極力利用しない方がよいということです。
 
-パッケージを開発する際は、極力別のパッケージい依存しないことも考慮に入れると良いでしょう。
+`calendar_widget` パッケージ自体が特定の状態管理パッケージの特定のバージョンに依存してしまうことで、`calendar_widget` パッケージを利用したいアプリのビルド時に依存関係の解決に問題が生じてしまう可能性があるためです。
 
-今回は、この中の「`build` メソッド内で行う」方法を採用します。本来 `build` メソッドで Widget の構築以外の処理をすることはアプリの処理効率の観点から好ましくはありませんが、今回は実装の容易さを重視します。
+パッケージを開発する際は、極力別のパッケージに依存しないことも念頭に設計するとよいでしょう。
+
+さて、今回はこの中の __`build` メソッド内で行う__ 方法を採用します。本来 `build` メソッドで Widget の構築以外の処理をすることはアプリの処理効率の観点から好ましくはありませんが、今回は実装の容易さを重視します。
 
 `Calendar` の `build` メソッドを以下のように修正してください。
 
@@ -167,17 +180,18 @@ Widget build(BuildContext context) {
 目的の UI を実装する手順はいろいろな方法が考えられますが、今回は以下のような流れで進めます。
 
 1. 1 日分の枠を表す Widget を作成
-2. 1 週間分の列を表す Widget を作成
+2. 1 週間分の行を表す Widget を作成
 3. 1 ヶ月全体のカレンダー UI を作成
 
 細かい Widget から順番に作っていく流れですね。ではひとつずつコーディングしてみましょう。
 
-### 1 日分の枠を表す Widget を作成
+## 1 日分の枠を表す Widget を作成
 
 まずは、1 日分の枠を表す `_DateBox` を作ります。
 
 `_DateBox` は指定した日付を正方形の枠内に表示する Widget で、要件としては以下のようになります。
 
+- 正方形の枠を構築する
 - 指定した文字列を枠の真ん中に表示する
 - 枠線を表示する
 - 土曜日の場合は枠内を青く、日曜日の場合は枠内を赤く塗りつぶす
@@ -231,9 +245,11 @@ Widget build(BuildContext context) {
 }
 ```
 
-ポイントとして、`_DateBox` 内ではサイズは指定しません。Flutter においては、サイズの制約は基本的にその Widget を使う側が指定するものであるからです。 `_DateBox` には `AspectRatio` で「正方形にする」とだけ指定しておくことで、利用する側が用意した幅（場合によっては高さ）に従って計算されたサイズで常に正方形の枠が確保されます。
+ポイントとして、`_DateBox` 内ではサイズは指定しません。Flutter においては、__サイズの制約は基本的にその Widget を使う側が指定する__ ものであるからです。`Calendar` のサイズは使われ方によって変化することを考慮しつつ、具体的な値は指定しないようにしておきましょう。[^1]
 
-### 1 週間分の列を表す Widget を作成
+そのかわり、`_DateBox` には `AspectRatio` で「正方形にする」とだけ指定しておくことで、利用する側が用意した幅（場合によっては高さ）に従って計算されたサイズで常に正方形の枠が確保されるようにしておきます。
+
+## 1 週間分の列を表す Widget を作成
 
 では次に、 `_DateBox` を 7 つ並べた「1 週間」を表す `_WeekRow` を作りましょう。
 
@@ -248,7 +264,7 @@ class _WeekRow extends StatelessWidget {
     super.key,
   });
 
-  final List<int?> datesOfWeek;
+  final List<String> datesOfWeek;
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +295,7 @@ Widget build(BuildContext context) {
 
 また、各 `_DateBox` は `_WeekRow` に与えられた幅に対して可能な限り大きなサイズを確保するよう、`Expanded` で囲んでいます。
 
-### 1 ヶ月全体のカレンダー UI を作成
+## 1 ヶ月全体のカレンダー UI を作成
 
 最後に、1 ヶ月全体のカレンダー UI を担当する `Calendar` の `build` メソッドを実装しましょう。
 
@@ -307,10 +323,6 @@ Widget build(BuildContext context) {
 ```
 
 以上です。
-
-お気づきの方もいるかもしれませんが、ここまでこの `Calendar` やその子 Widget を構築する上で、幅や高さの指定は一度もしていません。これは、このパッケージの利用者が状況に応じて柔軟にカレンダー UI の大きさを変えられるようにするためです。
-
-Flutter の基本的な考え方として、`Everything is a Widget` というものがあります。そのため、Widget はどのような状況でも他の Widget と同じように扱えるのが理想です。`Calendar` も、例えば `Text` や `Icon` などと同じような感覚で使えることを意識して設計すると使い勝手がぐっと上がるはずです。
 
 最後に、完成した `Calendar` クラス全体のソースコードを載せておきます。
 
@@ -361,7 +373,7 @@ class _WeekRow extends StatelessWidget {
         (index) => Expanded(
           child: _DateBox(
             datesOfWeek[index],
-            weekday: index,
+            weekday: index + 1,
           ),
         ),
       ).toList(),
@@ -401,4 +413,89 @@ class _DateBox extends StatelessWidget {
 }
 ```
 
-### example アプリで見た目を確認
+# 動作確認する
+
+Widget を提供する Flutter パッケージの動作確認方法は以下の 2 つが考えられます。
+
+- Widget テストを書いて実行する
+- example プロジェクトを作成する
+
+ユニットテストと Widget テストの違いはあるものの、テストを書く場所や実行方法は前のチャプターと同様です。
+
+ここでは、別の方法として `example` プロジェクトを作成してアプリを実行する方法で `Calendar` の見た目を確認していきましょう。
+
+`example` プロジェクトを作ることで、実際のアプリで利用した場合にどのような見た目になるのかが確認できるだけでなく、`example` プロジェクトの `main.dart` はパッケージの公開時に pub.dev の "Example" タブに表示される仕組みになっているため、利用者に効果的にパッケージの使い方を伝えられます。
+
+## example プロジェクトの作成
+
+`example` プロジェクトは通常の Flutter アプリプロジェクトと同じように作成します。
+
+VS Code のターミナルから、 `calendar_widget` プロジェクトのルートディレクトリで以下のコマンドを実行してください。
+
+```
+$ flutter create example
+```
+
+プロジェクトを作成したら、 `example/pubspec.yaml` に以下のように記述し、`calendar_widget` パッケージを取り込みましょう。
+
+
+```yaml:example/pubspec.yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  calendar_logic:
+    path:
+      ../
+```
+
+次に、`lib/main.dart` を以下のように修正します。
+
+```dart:lib/main.dart
+import 'package:calendar_widget/calendar_widget.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calendar Sample',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const _CalendarSample(),
+    );
+  }
+}
+
+class _CalendarSample extends StatelessWidget {
+  const _CalendarSample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('CalendarSample')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Calendar(date: DateTime(2022, 6)),
+      ),
+    );
+  }
+}
+```
+
+`example` アプリを実行し、以下のように表示できたら完成です。
+
+![example アプリを実行](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/calendar_widget_example.png?raw=true)
+
+---
+
+以上で `calendar_widget` パッケージの開発は完了です。次のチャプターではここまでに開発したパッケージを取り込んだ簡単なカレンダーアプリを作成します。
+
+[^1]: Flutter の基本的な考え方として、`Everything is a Widget` というものがあります。そのため、Widget はどのような状況でも他の Widget と同じように扱えるのが理想です。`Calendar` も、例えば `Text` や `Icon` などと同じような感覚で使えることを意識して設計すると使い勝手がぐっと上がるはずです。
