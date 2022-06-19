@@ -6,21 +6,20 @@ title: "Flutter アプリ calendar_app の開発"
 
 ここで作るアプリは、以下のように 1 ヶ月ずつ前後に移動しながらその月のカレンダーを表示する、というものです。
 
-![カレンダーアプリのデモ]()
 
-本来であればその月のカレンダーデータを算出し、それを元にカレンダー UI を構築する必要がありますが、今回はすでにパッケージが用意できているためとても簡単にアプリ開発が進められます。
+![カレンダーアプリのデモ](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/flutter_calendar_app.png?raw=true)
 
-では作っていきましょう。
+本来であればその月のカレンダーデータを算出し、それを元にカレンダー UI を構築する部分まで実装する必要がありますが、今回はすでにパッケージが用意できているためとても簡単にアプリ開発が進められます。
+
+一方で、ユーザーの操作に応じて表示する月を変化させる部分については `flutter_calendar` アプリ固有の挙動であるため、この部分のコーディングに集中して開発を進めましょう。
 
 # プロジェクトの作成
 
-`flutter create` コマンドを使って `flutter_calendar` プロジェクトを作成します。`package_handson` ディレクトリに移動して、以下のコマンドを実行してください。
+`flutter create` コマンドで `flutter_calendar` プロジェクトを作成します。`package_handson` ディレクトリに移動して、以下のコマンドを実行してください。
 
 ```
 $ flutter create flutter_calendar
 ```
-
-なお、今回はパッケージではなく通常のアプリプロジェクトであるため、前チャプターまでつけていた `-t package` は不要です。
 
 プロジェクトが作成できたらいつものように VS Code でプロジェクトを開きましょう。
 
@@ -28,7 +27,7 @@ $ flutter create flutter_calendar
 
 まずは `pubspec.yaml` を編集してパッケージをイストールします。
 
-ここでインストールするのは前のチャプターで開発した `calendar_widget` パッケージです。`calendar_logic` は `calendar_widget` の中で使われるものの、アプリが直接使わない場合は不要です。
+ここでインストールするのは前のチャプターで開発した `calendar_widget` パッケージです。`calendar_logic` は `calendar_widget` の中で使われるものの、アプリが直接使うわけではないため不要です。
 
 `pubspec.yaml` の `dependencies` を以下のように修正してください。
 
@@ -46,7 +45,7 @@ dependencies:
 
 ここまでのアプリとパッケージの依存関係を整理すると以下の図のようになります。
 
-![依存関係の図]()
+![依存関係の図（再掲）](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/flutter_calendar_dependencies.png?raw=true)
 
 # アプリの開発
 
@@ -101,7 +100,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
 ## 必要なフィールドとメソッドの定義
 
-UI を構築する前に、状態として必要なフィールドとそれを操作するメソッドを用意しましょう。
+UI を構築する前に、カレンダーの切り替えに必要なフィールド（状態）の定義とそれを操作するメソッドを用意しましょう。
 
 今回のアプリは「指定した月」のカレンダーを表示し、それをユーザーの操作で「前後の月に移動できる」アプリであるため、以下のフィールドとメソッドが必要です。
 
@@ -167,9 +166,9 @@ void _toPreviousMonth() {
 
 まずは、カレンダーの上に表示する月の移動アイコンと現在の月を表す Widget を `_CalendarController` として用意しましょう。
 
-![_CalendarController で構築する UI]()
+![_CalendarController で構築する UI](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/calendar_controller.png?raw=true)
 
-それぞれのアイコンがタップされた際の処理は、コールバックとして `_CalendarPageState` に処理させる作りとします。
+左右それぞれのアイコンがタップされた際の処理は、コールバックとして `_CalendarPageState` に処理させる作りとします。
 
 それらのコールバックと現在表示中の月を示す文字列を引数とし、以下のように `_CalendarController` を実装してください。
 
@@ -270,15 +269,13 @@ Widget build(BuildContext context) {
 
 ここまで実装できたら動作確認をしてみましょう。
 
-![動作デモ]()
-
 # まとめ
 
-お疲れ様でした！これで、UI を持たない `calendar_logic` から始まったカレンダー構築パッケージの開発と、それを使ったアプリ開発は完了です。
+お疲れ様でした！これで、UI を持たない `calendar_logic` の実装から始まったパッケージ開発と、それを使ったアプリ開発は完了です。
 
-Dart のみで実装されたパッケージであれば、あとはこのハンズオンで実装した内容の延長で実現できるはずです。私が公開している `crop_your_image` も同じ仕組みの上に成り立っています。
+Dart のみで実装されたパッケージであれば、別の内容のパッケージでもこのハンズオンの内容を元に開発できるはずです。私が公開している `crop_your_image` も同じように開発しています。
 
-実際に作って公開してみたいパッケージがある方は、このままパッケージ側の開発を進め、最後は以下のドキュメントを元に pub.dev への公開まで行ってみてください。
+実際に作って公開してみたいパッケージがある方は、このままパッケージ側の開発を進め、最後は以下のドキュメントを元に pub.dev への公開までチャレンジしてみてください。
 
 https://docs.flutter.dev/development/packages-and-plugins/developing-packages
 
