@@ -48,7 +48,7 @@ package_handson
 `package_handson` ディレクトリを任意の場所に作成したら、ターミナルから以下のコマンドで `calendar_logic` プロジェクトを作成します。
 
 ```
-$ cd path/to/calenar_handson
+$ cd path/to/calendar_handson
 $ flutter create -t package calendar_logic
 ```
 
