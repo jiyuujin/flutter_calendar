@@ -1,5 +1,5 @@
 ---
-title: "Flutter アプリ calendar_app の開発"
+title: "Flutter アプリ flutter_calendar の開発"
 ---
 
 では最後に、ここまでに開発した `calendar_widget` パッケージを使って簡単なカレンダー表示アプリを作ってみましょう。
@@ -9,7 +9,7 @@ title: "Flutter アプリ calendar_app の開発"
 
 ![カレンダーアプリのデモ](https://github.com/chooyan-eng/flutter_calendar/blob/main/books/calendar-package/images/flutter_calendar_app.png?raw=true)
 
-本来であればその月のカレンダーデータを算出し、それを元にカレンダー UI を構築する部分まで実装する必要がありますが、今回はすでにパッケージが用意できているためとても簡単にアプリ開発が進められます。
+本来であればその月のカレンダーデータを算出し、それを元にカレンダー UI を構築する部分までをアプリ内に実装する必要がありますが、今回はすでにパッケージが用意できているためとても簡単にアプリ開発が進められます。
 
 一方で、ユーザーの操作に応じて表示する月を変化させる部分については `flutter_calendar` アプリ固有の挙動であるため、この部分のコーディングに集中して開発を進めましょう。
 

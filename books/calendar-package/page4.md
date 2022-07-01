@@ -45,18 +45,19 @@ package_handson
   |- flutter_calendar
 ```
 
-`package_handson` ディレクトリを任意の場所に作成したら、ターミナルから以下のコマンドで `calendar_logic` プロジェクトを作成します。
+`package_handson` ディレクトリを任意の場所に作成したら、ターミナルから `flutter create` コマンドで `calendar_logic` プロジェクトを作成します。[^1]
 
 ```
-$ cd path/to/calendar_handson
 $ flutter create -t package calendar_logic
 ```
 
 ログの最後に以下のメッセージが出たら OK です。
 
 ```
-All done!
-Your package code is in calendar_logic/lib/calendar_logic.dart
+Created project calendar_logic in calendar_logic! In order to get started, run the following commands:
+
+  cd calendar_logic
+  dart run example/calendar_logic_example.dart
 ```
 
 それでは、作成した `calendar_logic` プロジェクトを VS Code で開いてください。
@@ -98,9 +99,11 @@ class Calculator {
 - `CalendarBuilder` クラス
 - `build` メソッド
 
-`lib/calendar_logic.dart` ファイルを以下のように修正してください。コメントは任意ですが、pub.dev は __public なクラス、フィールド、メソッドにドキュメントが記述されていること__ を PUB POINTS の評価対象としているため、pub.dev への公開を考える場合は記述するクセをつけるとよいでしょう。[^1]
+`lib/calendar_logic.dart` ファイルを以下のように修正してください。コメントは任意ですが、pub.dev は __public なクラス、フィールド、メソッドにドキュメントが記述されていること__ を PUB POINTS の評価対象としているため、pub.dev への公開を考える場合は記述するクセをつけるとよいでしょう。[^2]
 
 ```dart:calendar_logic.dart
+library calendar_logic;
+
 /// 1ヶ月分のカレンダーを生成するクラス
 class CalendarBuilder {
   /// [date]が表す日が所属する月のカレンダーを生成します
@@ -361,7 +364,7 @@ class CalendarBuilder {
 たとえば、 2022 年 1 月のカレンダーデータが正しく生成されることを確認するために、以下のように書き換えてみてください。
 
 ```dart:calendar_logic_test
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:calendar_logic/calendar_logic.dart';
 
 void main() {
@@ -396,4 +399,6 @@ $ flutter test
 
 以上で `calendar_logic` パッケージの開発は完了です。次は `calendar_widget` パッケージに `Calendar` を実装していきます。
 
-[^1]: 本来であればコメントは英語で書くことが望ましいですが、このハンズオンでは分かりやすさを優先して日本語で書いています。
+[^1]: 同様の操作は VS Code のコマンドパレットの `Flutter: New Project` からテンプレートに `Package` を選択することでも行えます。
+
+[^2]: 本来であればコメントは英語で書くことが望ましいですが、このハンズオンでは分かりやすさを優先して日本語で書いています。

@@ -99,7 +99,7 @@ library calendar_widget;
 import 'package:flutter/material.dart';
 
 class Calendar extends StatelessWidget {
-  const Calendar({Key? key}) : super(key: key);
+  const Calendar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -168,9 +168,15 @@ Widget 内で利用するデータの生成処理のタイミングは、以下�
 ```dart:calendar_widget.dart
 @override
 Widget build(BuildContext context) {
-  final calendar = CalendarBuilder().build(date);
+  final calendarData = CalendarBuilder().build(date);
   return Container();
 }
+```
+
+インポートのエラーが出ますので、以下の `import` 文も追加します。
+
+```dart
+import 'package:calendar_logic/calendar_logic.dart';
 ```
 
 あとは、この `calendar` を利用してカレンダーの UI を構築していきます。
@@ -203,8 +209,7 @@ Widget build(BuildContext context) {
 class _DateBox extends StatelessWidget {
   const _DateBox(
     this.label, {
-    required this.color,
-    super.key,
+    required this.weekday,
   });
 
   /// 表示文字列（日付の他、「月」「火」といった曜日の場合もあり）
@@ -217,6 +222,7 @@ class _DateBox extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: UI を実装 
   }
+}
 ```
 
 あとは、これらの引数を使って `build` メソッドを実装します。
@@ -245,7 +251,7 @@ Widget build(BuildContext context) {
 }
 ```
 
-ポイントとして、`_DateBox` 内ではサイズは指定しません。Flutter においては、__サイズの制約は基本的にその Widget を使う側が指定する__ ものであるからです。`Calendar` のサイズは使われ方によって変化することを考慮しつつ、具体的な値は指定しないようにしておきましょう。[^1]
+ポイントとして、`_DateBox` 内ではサイズは指定しません。Flutter においては、__サイズの制約はなるべくその Widget を使う側が指定する__ ものであるからです。`Calendar` のサイズは使われ方によって変化することを考慮しつつ、具体的な値は指定しないようにしておきましょう。[^1]
 
 そのかわり、`_DateBox` には `AspectRatio` で「正方形にする」とだけ指定しておくことで、利用する側が用意した幅（場合によっては高さ）に従って計算されたサイズで常に正方形の枠が確保されるようにしておきます。
 
@@ -259,10 +265,7 @@ Widget build(BuildContext context) {
 
 ```dart
 class _WeekRow extends StatelessWidget {
-  const _WeekRow(
-    this.datesOfWeek, {
-    super.key,
-  });
+  const _WeekRow(this.datesOfWeek);
 
   final List<String> datesOfWeek;
 
@@ -270,6 +273,7 @@ class _WeekRow extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: UI を実装 
   }
+}
 ```
 
 次に、`build` メソッドを実装します。`_WeekRow` は `_DateBox` を横に並べるだけのシンプルな `Row` ですので、たとえば以下のような実装になります。
@@ -358,10 +362,7 @@ class Calendar extends StatelessWidget {
 }
 
 class _WeekRow extends StatelessWidget {
-  const _WeekRow(
-    this.datesOfWeek, {
-    super.key,
-  });
+  const _WeekRow(this.datesOfWeek);
 
   final List<String> datesOfWeek;
 
@@ -444,7 +445,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  calendar_logic:
+  calendar_widget:
     path:
       ../
 ```
