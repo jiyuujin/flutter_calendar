@@ -269,6 +269,10 @@ Widget build(BuildContext context) {
 
 ここまで実装できたら動作確認をしてみましょう。
 
+`main.dart` の最終的なコードは以下を参照してください。
+
+https://github.com/chooyan-eng/flutter_calendar/blob/main/lib/main.dart
+
 # まとめ
 
 お疲れ様でした！これで、UI を持たない `calendar_logic` の実装から始まったパッケージ開発と、それを使ったアプリ開発は完了です。
